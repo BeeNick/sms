@@ -1,0 +1,25 @@
+<!--smsUI/templates/accounts/login.html-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Login</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Login">
+</form>
+
+<br>
+<h3>New user?
+<br>
+<a href="{% url 'register' %}">Register</a>
+</h3>
+
+<a href="{% url 'home' %}">Back</a>
+<br>
+<a href="{% url 'password_reset' %}">Reset password</a>
+
+
+{% endblock %}

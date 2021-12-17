@@ -12,3 +12,14 @@ Creo un file con le dipendenze tramite 'pip freeze' in modo che siano chiare a d
 
 Direi che per il momento evito anche di inviare sul server il database, se per qualche motivo dovesse poi diventare utile ci penserò.
 
+
+Momentaneamnete disabilitati contrlli sulle password per velocizzare lo sviluppo.
+Ricordarsi di riabilitarli dopo la fase 1.
+AUTH_PASSWORD_VALIDATORS in settings.py
+
+
+Modificato settings per introdurre redirect di default a seguito di login e logout.
+
+
+Sarebbe bene prevedere anche una modalità di recupero password via e-mail, ma servirebbe aver già predisposto un e-mail server. 
+Quindi predispongo solo la struttura e in settings definisco che l'e-mail server è localhost
