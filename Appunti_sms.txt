@@ -10,4 +10,5 @@ Inserisco il virtual envirorment in gitignore in modo da non rilasciarlo sul ser
 
 Creo un file con le dipendenze tramite 'pip freeze' in modo che siano chiare a disposizione di chi voglia utilizzare il codice.
 
+Direi che per il momento evito anche di inviare sul server il database, se per qualche motivo dovesse poi diventare utile ci penserò.
 
