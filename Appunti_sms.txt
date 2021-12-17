@@ -1,0 +1,13 @@
+Appunti sviluppo sms
+
+Python3.
+
+Ho scelto di utilizzare il framework Django.
+
+Creo un virtual envirorment per gestione separata instalalzione dipendenze.
+
+Inserisco il virtual envirorment in gitignore in modo da non rilasciarlo sul server.
+
+Creo un file con le dipendenze tramite 'pip freeze' in modo che siano chiare a disposizione di chi voglia utilizzare il codice.
+
+
