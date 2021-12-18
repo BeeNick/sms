@@ -17,7 +17,7 @@ class UserProfile(models.Model):
 		return self.user.username
 
 
-# Define skills set class, example "Programming Languages"
+# Define skills set class, example: "Programming Languages"
 class SkillsSet(models.Model):
 	skills_set_name = models.CharField(max_length=50)
 
@@ -29,7 +29,7 @@ class SkillsSet(models.Model):
 		return self.skills_set_name
 
 
-# Define skill element class, example in skills set "Programming Languages" a skill element can be Python 
+# Define skill element class, example: in skills set "Programming Languages" a skill element can be Python 
 class SkillElement(models.Model):
 	skill_element_name = models.CharField(max_length=50)
 	skill_set = models.ForeignKey(SkillsSet, on_delete=models.CASCADE)
@@ -42,7 +42,7 @@ class SkillElement(models.Model):
 		return f'skills set: {self.skill_set.skills_set_name} - element: {self.skill_element_name}'
 
 
-# Define association between skill elements and usersProfile
+# Define association between skill elements and userProfiles
 class PersonalSkills(models.Model):
 	user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	skill_element = models.ForeignKey(SkillElement, on_delete=models.CASCADE)
