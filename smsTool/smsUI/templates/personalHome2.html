@@ -4,18 +4,20 @@
 
 {% block content %}
 Hello, {{ user.username|default:'Developer' }}!
-
+<br>
+Here your profile info
+<br>
 
 <div>
 	{% if user.is_authenticated %}
 		<!-- Display user informations -->
-		Location: {{profile.location}}
+		Location: {{skills_list.0.user_profile.location}}
 		<br>
-		Bio: {{profile.bio}}
+		Bio: {{skills_list.0.user_profile.bio}}
 		<br>
 		<!-- Display skills list -->
 		<ul>
-		{% for skill in PersonalSkills.objects.filter(user_profile=profile) %}
+		{% for skill in skills_list %}
 		<!-- Display only usefull informations -->
 			{% if skill.familiarity != 0 %}
 				<li>{{ skill.skill_element.skill_set.skills_set_name }}</li>

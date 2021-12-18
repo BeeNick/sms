@@ -30,3 +30,11 @@ Quindi predispongo solo la struttura e in settings definisco che l'e-mail server
 Predispongo le PersonalSkills con ordinamento per Profilo utente, livello di conoscenza inverso, skill, in modo che recuperando le Personal skills di un soggetto appaiano per prime quelle più rilevanti.
 
 
+inserisco in gitignore anche le migrazioni, dopotutto è corretto che vengano rifatte in locale, non serve tenerne traccia
+
+---
+
+Ho avuto dei problemi con la gestione della DetailView per la hompage personale, ho aggirato il problema con una ListView sulle skill però non è bello, prima o poi dovrò rimetterci mano per fare le cose per bene.
+Per non dimenticarmene ho tenuto anche la versione non funzionante e aggiornato la redirect post login in settings
+
+

@@ -129,7 +129,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Personal login/logout redirect
 
-LOGIN_REDIRECT_URL = 'personalHome'
+LOGIN_REDIRECT_URL = 'personalHome2'
 
 LOGOUT_REDIRECT_URL = 'home'
 

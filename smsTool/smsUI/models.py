@@ -7,6 +7,7 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	bio = models.TextField(max_length=500, blank=True)
 	location = models.CharField(max_length=30, blank=True)
+	slug = models.SlugField(max_length = 250, null=True, blank=True)
 
 	class Meta:
 		ordering = ['user']
@@ -48,7 +49,7 @@ class PersonalSkills(models.Model):
 	familiarity = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(5)])
 
 	class Meta:
-		ordering = ['user_profile', '-familiarity', 'skill_element']
+		ordering = ['user_profile', '-familiarity', 'skill_element__skill_set', 'skill_element']
 		constraints = [models.UniqueConstraint(fields=['user_profile','skill_element'], name='unique_personal_skills')]
 
 	def __str__(self):
