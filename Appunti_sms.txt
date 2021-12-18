@@ -23,3 +23,10 @@ Modificato settings per introdurre redirect di default a seguito di login e logo
 
 Sarebbe bene prevedere anche una modalità di recupero password via e-mail, ma servirebbe aver già predisposto un e-mail server. 
 Quindi predispongo solo la struttura e in settings definisco che l'e-mail server è localhost
+
+
+----
+
+Predispongo le PersonalSkills con ordinamento per Profilo utente, livello di conoscenza inverso, skill, in modo che recuperando le Personal skills di un soggetto appaiano per prime quelle più rilevanti.
+
+
