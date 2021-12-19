@@ -38,6 +38,6 @@ Ho avuto dei problemi con la gestione della DetailView per la hompage personale,
 Per non dimenticarmene ho tenuto anche la versione non funzionante 
 
 ----
-c'è qualcosa che non va nel form NewSkillElement
+c'è qualcosa che non va nel form NewSkillElementForm e EditUserProfileForm
 
 

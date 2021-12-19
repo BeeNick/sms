@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from smsUI.models import PersonalSkills, SkillElement, SkillsSet
+from smsUI.models import PersonalSkills, SkillElement, SkillsSet, UserProfile
 
 
 class smsUIUserCreationForm(UserCreationForm):
@@ -26,11 +26,10 @@ class EditPersonalSkillsForm(forms.Form):
         super(EditPersonalSkillsForm, self).__init__(*args, **kwargs)
 
         try:
-            personal_skills = PersonalSkills.objects.filter(user=user)
+            personal_skills = PersonalSkills.objects.filter(user_profile=UserProfile.objects.get(user=user))
         
             for index, skill in enumerate(SkillElement.objects.all()):
-                exec(f"self.fields['skill_{index}'].initial = \
-                    {PersonalSkills.objects.get(user=user, skill_element=skill).familiarity}")
+                exec(f"self.fields['skill_{index}'].initial = {PersonalSkills.objects.get(user_profile=UserProfile.objects.get(user=user), skill_element=skill).familiarity}")
 
         except Exception as e:
             print('Edit personal skills form initialization error')
@@ -45,7 +44,7 @@ class NewSkillElementForm(forms.Form):
     # is more user friendly allow to add directly the familiarity value for the new skill element directly in this form
     familiarity = forms.IntegerField(label='Familiarity: ', min_value=0, max_value=5)
 
-    def __init__(self, socialclass_id=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields['skill_set'].queryset = SkillsSet.objects.all()
@@ -60,6 +59,26 @@ class NewSkillElementForm(forms.Form):
 class NewSkillsSetForm(forms.Form):
     name = forms.CharField(label='Skill element: ', widget=forms.TextInput(attrs={'size': 50}))
 
+
+class EditUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'role', 'seniority', 'joining_date', 'bio', 'location']
+
+    def __init__(self, user=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['user'] = user.username
+
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+            self.fields['role'] = user_profile.role
+            self.fields['seniority'] = user_profile.seniority
+            self.fields['joining_date'] = user_profile.joining_date
+            self.fields['bio'] = user_profile.bio
+            self.fields['location'] = user_profile.location
+        except Exception as e:
+            print(e)
 
 
 

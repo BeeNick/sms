@@ -1,11 +1,11 @@
-<!--smsUI/templates/editPersonalSkills.html-->
+<!--smsUI/templates/editUserProfile.html-->
 
 
 {% extends "base.html" %}
 
 {% block content %}
 
-<h2>Personal skills</h2>
+<h2>User Profile General Information</h2>
 
 {% if user.is_authenticated %}
     <form action="" method="post">
@@ -13,8 +13,6 @@
         {{ form.as_p }}
         <input type="submit" value="Ok" />
     </form>
-    <br>
-    <a href="{% url 'newSkillElement' %}">Add new skill</a>
     <br>
     <a href="{% url 'personalHome' %}">Back</a>
     <br>

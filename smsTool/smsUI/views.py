@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm
+from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm, EditUserProfileForm
 from smsUI.models import PersonalSkills, UserProfile, SkillElement, SkillsSet
 
 
@@ -99,12 +99,18 @@ def addSkill(request):
 				print("Skill element saved")
 
 				# Update user personal skills familiarity for the new skill element
-				personal_skill = PersonalSkills.objects.get(user=request.user, skill_element=new_skill_element)
-				personal_skill.familiarity = form_data.cleaned_data['familiarity']
-				personal_skill.save()
+				try:
+					personal_skill = PersonalSkills.objects.get(\
+						user_profile=UserProfile.objects.get(user=request.user), skill_element=new_skill_element)
+					personal_skill.familiarity = form_data.cleaned_data['familiarity']
+					personal_skill.save()
+					print("User personal skills updated")
+					return redirect(reverse('editPersonalSkills'))
+				except:
+					return render(request, "newSkillElement.html", {"form": form}, \
+						{"error_message": \
+						"Warning: Skill element saved, having trouble updating user personal skills"})
 
-				print("User personal skills updated")
-				return redirect(reverse('editPersonalSkills'))
 		else:
 			return render(request, "newSkillElement.html", {"form": form}, \
 				{"error_message": "Something wrong in adding new skill"})
@@ -146,3 +152,41 @@ def addSkillsSet(request):
 	else:
 		print("GET")
 		return render(request, 'newSkillsSet.html', {"form": form})
+
+
+# Edit user profile, allow also save new user profile
+def editUserProfile(request):
+
+	form = EditUserProfileForm(user=request.user)  # Init the form with user values
+	if request.method == 'POST':
+		# Parse data from the POST in form_data
+		form_data = EditUserProfileForm(user=request.user, data=request.POST)
+		if form_data.is_valid():   
+			
+			#Avoid duplicate user profile, and allow insertion new user profile
+			try:
+				# Edit existing user profile
+				user_profile = UserProfile.objects.get(user=request.user)
+				print("Edit user profile")
+			except:
+				# New user profile
+				user_profile = UserProfile()
+				user_profile.user = request.user
+				print("New user profile")
+			
+			finally:
+				user_profile.role = form_data.cleaned_data['role']
+				user_profile.seniority = form_data.cleaned_data['seniority']
+				user_profile.joining_date = form_data.cleaned_data['joining_date']
+				user_profile.bio = form_data.cleaned_data['bio']
+				user_profile.location = form_data.cleaned_data['location']
+				print("User profile saved")
+				return redirect(reverse('personalHome'))
+
+		else:
+			return render(request, "editUserProfile.html", {"form": form}, \
+				{"error_message": "Something wrong in editing user profile"})
+
+	else:
+		print("GET")
+		return render(request, 'editUserProfile.html', {"form": form})
