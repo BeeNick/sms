@@ -1,0 +1,26 @@
+<!--smsUI/templates/editPersonalSkills.html-->
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Ok" />
+    </form>
+    <br>
+    <a href="{% url 'home' %}">Add new skill</a>
+    <br>
+    <a href="{% url 'home' %}">Back</a>
+    <br>
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+<p style="color:red"><strong> {{error_message}} </strong></p>
+
+
+{% endblock %}

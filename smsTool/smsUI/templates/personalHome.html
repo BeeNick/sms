@@ -18,8 +18,8 @@ Hello, {{ user.username|default:'Developer' }}!
 		{% for skill in PersonalSkills.objects.filter(user_profile=profile) %}
 		<!-- Display only usefull informations -->
 			{% if skill.familiarity != 0 %}
-				<li>{{ skill.skill_element.skill_set.skills_set_name }}</li>
-				<li>{{ skill.skill_element.skill_element_name }}</li>
+				<li>{{ skill.skill_element.skill_set.name }}</li>
+				<li>{{ skill.skill_element.name }}</li>
 				<li>{{ skill.familiarity }}</li>
 			{% endif %}
 		{% endfor %}

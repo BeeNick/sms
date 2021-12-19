@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from smsUI.forms import smsUIUserCreationForm
-from smsUI.models import PersonalSkills, UserProfile
+from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm
+from smsUI.models import PersonalSkills, UserProfile, SkillElement
 
 
 # Main hompage
@@ -47,3 +47,28 @@ def register(request):
 
 	return redirect(reverse('home'))
 
+
+# Edit personal skills
+def editPersonalSkills(request):
+
+	form = EditPersonalSkillsForm(user=request.user)  # Init the form with user values
+	if request.method == 'POST':
+		# Parse data from the POST in form_data
+		form_data = EditPersonalSkillsForm(user=request.user, data=request.POST)
+		if form_data.is_valid():   
+			for index, skill in enumerate(SkillElement.objects.all()):
+				personal_skill = PersonalSkills.objects.get(user=request.user, skill_element=skill)
+				personal_skill.familiarity = form_dati.cleaned_data[f'skill_{i}']
+				personal_skill.save()
+
+			print("Personal skills editing completed")
+
+			return redirect(reverse('personalHome'))
+
+		else:
+			return render(request, "editPersonalSkills.html", {"form": form}, \
+				{"error_message": "Something wrong in editing skills"})
+
+	else:
+		print("GET")
+		return render(request, 'editPersonalSkills.html', {"form": form})

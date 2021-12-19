@@ -35,6 +35,6 @@ inserisco in gitignore anche le migrazioni, dopotutto è corretto che vengano ri
 ---
 
 Ho avuto dei problemi con la gestione della DetailView per la hompage personale, ho aggirato il problema con una ListView sulle skill però non è bello, prima o poi dovrò rimetterci mano per fare le cose per bene.
-Per non dimenticarmene ho tenuto anche la versione non funzionante e aggiornato la redirect post login in settings
+Per non dimenticarmene ho tenuto anche la versione non funzionante 
 
 
