@@ -6,6 +6,14 @@
 
 <h2>Personal profile</h2>
 
+{% if user.is_authenticated %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<br>
+	<a href="{% url 'password_change' %}">Change password</a>
+	<br>
+{% endif %}
+
+<br>
 Hello, {{ user.username|default:'Developer' }}!
 <br>
 Here your profile info
@@ -15,6 +23,10 @@ Here your profile info
 	{% if user.is_authenticated %}
 		<!-- Display user informations -->
 		<h3>General information</h3>
+
+		<a href="{% url 'editUserProfile' %}">Edit General Information</a>
+		<br>
+		<br>
 		Role: {{skills_list.0.user_profile.role}}
 		<br>
 		{% if skills_list.0.user_profile.seniority != null %}
@@ -27,12 +39,12 @@ Here your profile info
 		<br>
 		Bio: {{skills_list.0.user_profile.bio}}
 		<br>
-		<br>
-		<a href="{% url 'editUserProfile' %}">Edit Profile General Information</a>
-		<br>
 
 		<!-- Display skills list -->
 		<h3>Personal skills</h3>
+		
+		<a href="{% url 'editPersonalSkills' %}">Edit skills</a>
+		<br>
 		<br>
 		<ul>
 		{% for skill in skills_list %}
@@ -44,11 +56,7 @@ Here your profile info
 			{% endif %}
 		{% endfor %}
 		</ul>
-		<a href="{% url 'editPersonalSkills' %}">Edit skills</a>
-		<br>
-		<a href="{% url 'logout' %}">Logout</a>
-		<br>
-		<a href="{% url 'password_change' %}">Change password</a>
+		
 	{% else %}
 		<a href="{% url 'login' %}">Login</a>
 	{% endif %}
