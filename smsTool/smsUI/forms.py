@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from smsUI.models import PersonalSkills, SkillElement
+from smsUI.models import PersonalSkills, SkillElement, SkillsSet
 
 
 class smsUIUserCreationForm(UserCreationForm):
@@ -37,3 +37,31 @@ class EditPersonalSkillsForm(forms.Form):
             print(e)
             #TODO : manage try errors
  
+
+class NewSkillElementForm(forms.Form):
+    skill_set = forms.ModelChoiceField(queryset=SkillsSet.objects.all(), label='Skill set: ')
+    name = forms.CharField(label='Skill element: ', widget=forms.TextInput(attrs={'size': 50}))
+    # Considering that the new skill element page will be visible from edit skills from the personal hompage
+    # is more user friendly allow to add directly the familiarity value for the new skill element directly in this form
+    familiarity = forms.IntegerField(label='Familiarity: ', min_value=0, max_value=5)
+
+    def __init__(self, socialclass_id=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['skill_set'].queryset = SkillsSet.objects.all()
+        self.fields['familiarity'] = 0
+        try:
+            # Considering the case skillsSet hasn't been defined yet
+            self.fields['skill_set'].initial = SkillsSet.objects.all()[0]
+        except Exception as e:
+            print(e)
+
+
+class NewSkillsSetForm(forms.Form):
+    name = forms.CharField(label='Skill element: ', widget=forms.TextInput(attrs={'size': 50}))
+
+
+
+
+
+

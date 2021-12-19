@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm
-from smsUI.models import PersonalSkills, UserProfile, SkillElement
+from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm
+from smsUI.models import PersonalSkills, UserProfile, SkillElement, SkillsSet
 
 
 # Main hompage
@@ -58,7 +58,7 @@ def editPersonalSkills(request):
 		if form_data.is_valid():   
 			for index, skill in enumerate(SkillElement.objects.all()):
 				personal_skill = PersonalSkills.objects.get(user=request.user, skill_element=skill)
-				personal_skill.familiarity = form_dati.cleaned_data[f'skill_{i}']
+				personal_skill.familiarity = form_data.cleaned_data[f'skill_{i}']
 				personal_skill.save()
 
 			print("Personal skills editing completed")
@@ -72,3 +72,77 @@ def editPersonalSkills(request):
 	else:
 		print("GET")
 		return render(request, 'editPersonalSkills.html', {"form": form})
+
+
+# Add new skill element
+def addSkill(request):
+
+	form = NewSkillElementForm()  # Init the form with user values
+	if request.method == 'POST':
+		# Parse data from the POST in form_data
+		form_data = NewSkillElementForm(data=request.POST)
+		if form_data.is_valid():   
+			new_skill_name = form_data.cleaned_data['name']
+
+			#Avoid duplicate skill elements
+			try:
+				SkillElement.objects.get(name=new_skill_name)
+				print("Skill element name already exist!")
+				return render(request, "newSkillElement.html", {"form": form}, \
+				{"error_message": "Skill element name already exist! Please insert a different name"})
+			except:
+				# Save new skill element
+				new_skill_element = SkillElement()
+				new_skill_element.name = new_skill_name
+				new_skill_element.skill_set = form_data.cleaned_data['skill_set']
+				new_skill_element.save()
+				print("Skill element saved")
+
+				# Update user personal skills familiarity for the new skill element
+				personal_skill = PersonalSkills.objects.get(user=request.user, skill_element=new_skill_element)
+				personal_skill.familiarity = form_data.cleaned_data['familiarity']
+				personal_skill.save()
+
+				print("User personal skills updated")
+				return redirect(reverse('editPersonalSkills'))
+		else:
+			return render(request, "newSkillElement.html", {"form": form}, \
+				{"error_message": "Something wrong in adding new skill"})
+
+	else:
+		print("GET")
+		return render(request, 'newSkillElement.html', {"form": form})
+
+
+# Add new skills set
+def addSkillsSet(request):
+
+	form = NewSkillsSetForm()  
+	if request.method == 'POST':
+		# Parse data from the POST in form_data
+		form_data = NewSkillsSetForm(data=request.POST)
+		if form_data.is_valid():   
+			new_skills_set_name = form_data.cleaned_data['name']
+
+			#Avoid duplicate skill elements
+			try:
+				SkillsSet.objects.get(name=new_skills_set_name)
+				print("Skills set name already exist!")
+				return render(request, "newSkillsSet.html", {"form": form}, \
+				{"error_message": "Skills set name already exist! Please insert a different name"})
+			except:
+				# Save new skills set
+				new_skills_set = SkillsSet()
+				new_skills_set.name = new_skills_set_name
+				new_skills_set.save()
+				print("Skills set saved")
+
+				# The insertion of new skills set will be possible only in editing skills
+				return redirect(reverse('newSkillElement'))
+		else:
+			return render(request, "newSkillsSet.html", {"form": form}, \
+				{"error_message": "Something wrong in adding new skills set"})
+
+	else:
+		print("GET")
+		return render(request, 'newSkillsSet.html', {"form": form})

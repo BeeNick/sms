@@ -21,7 +21,7 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	role = models.TextField(max_length=100, blank=True)
 	seniority = models.ForeignKey(Seniority, on_delete=models.CASCADE, null=True)
-	joining_date = models.DateField(default=now().today(), blank=True) #Don't care about time zone for the moment
+	joining_date = models.DateField(default=now().today(), blank=True)
 	bio = models.TextField(max_length=600, blank=True)
 	location = models.CharField(max_length=30, blank=True)
 	slug = models.SlugField(max_length = 250, null=True, blank=True)
@@ -43,7 +43,7 @@ class SkillsSet(models.Model):
 		constraints = [models.UniqueConstraint(fields=['name'], name='unique_skills_set')]
 
 	def __str__(self):
-		return self.skills_set_name
+		return self.name
 
 
 # Define skill element class, example: in skills set "Programming Languages" a skill element can be Python 

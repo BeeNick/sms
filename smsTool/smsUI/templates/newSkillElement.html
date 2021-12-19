@@ -1,11 +1,11 @@
-<!--smsUI/templates/editPersonalSkills.html-->
+<!--smsUI/templates/newSkillElement.html-->
 
 
 {% extends "base.html" %}
 
 {% block content %}
 
-<h2>Personal skills</h2>
+<h2>New skill</h2>
 
 {% if user.is_authenticated %}
     <form action="" method="post">
@@ -14,9 +14,11 @@
         <input type="submit" value="Ok" />
     </form>
     <br>
-    <a href="{% url 'newSkillElement' %}">Add new skill</a>
+    <a href="{% url 'home' %}">Add new skills set</a>
     <br>
-    <a href="{% url 'home' %}">Back</a>
+    <a href="{% url 'editPersonalSkill' %}">Back</a>
+    <br>
+    <a href="{% url 'personalHompage' %}">Home</a>
     <br>
 {% else %}
     <a href="{% url 'login' %}">Login</a>
