@@ -6,15 +6,18 @@
 
 <h2>Personal profile</h2>
 
+
+
+
+Hello, {{ user.username|default:'Developer' }}!
+<br>
+<br>
 {% if user.is_authenticated %}
 	<a href="{% url 'logout' %}">Logout</a>
 	<br>
 	<a href="{% url 'password_change' %}">Change password</a>
 	<br>
 {% endif %}
-
-<br>
-Hello, {{ user.username|default:'Developer' }}!
 <br>
 Here your profile info
 <br>

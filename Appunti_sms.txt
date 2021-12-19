@@ -38,6 +38,6 @@ Ho avuto dei problemi con la gestione della DetailView per la hompage personale,
 Per non dimenticarmene ho tenuto anche la versione non funzionante 
 
 ----
-c'è qualcosa che non va nel form NewSkillElementForm e EditUserProfileForm
-
+verificare come mai nel portale di amministrazione non sono visibili i modelli dell'app smsUI
+verificare che tutti form realizzati salvino correttamente i dati
 

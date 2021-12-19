@@ -56,7 +56,7 @@ class SkillElement(models.Model):
 		constraints = [models.UniqueConstraint(fields=['name'], name='unique_skill_element')]
 
 	def __str__(self):
-		return f'skills set: {self.skill_set.name} - element: {self.name}'
+		return f'( skills set: {self.skill_set.name} - element: {self.name} )'
 
 
 # Define association between skill elements and userProfiles
@@ -70,8 +70,8 @@ class PersonalSkills(models.Model):
 		constraints = [models.UniqueConstraint(fields=['user_profile','skill_element'], name='unique_personal_skills')]
 
 	def __str__(self):
-		return f'user: {self.user_profile.user.username} - skills set: {self.skill_element.skill_set} \
-		 element: {self.skill_element.name} - familiarity: {self.familiarity}/5'
+		return f'( user: {self.user_profile.user.username} - skills set: {self.skill_element.skill_set} \
+		 element: {self.skill_element.name} - familiarity: {self.familiarity}/5 )'
 
 
 

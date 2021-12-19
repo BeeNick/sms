@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from smsUI.models import PersonalSkills, SkillElement, SkillsSet, UserProfile
+from smsUI.models import PersonalSkills, SkillElement, SkillsSet, UserProfile, Seniority
+from django.utils.timezone import now
 
 
 class smsUIUserCreationForm(UserCreationForm):
@@ -48,7 +49,7 @@ class NewSkillElementForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         self.fields['skill_set'].queryset = SkillsSet.objects.all()
-        self.fields['familiarity'] = 0
+        self.fields['familiarity'].initial = 0
         try:
             # Considering the case skillsSet hasn't been defined yet
             self.fields['skill_set'].initial = SkillsSet.objects.all()[0]
@@ -60,25 +61,28 @@ class NewSkillsSetForm(forms.Form):
     name = forms.CharField(label='Skill element: ', widget=forms.TextInput(attrs={'size': 50}))
 
 
-class EditUserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['user', 'role', 'seniority', 'joining_date', 'bio', 'location']
+# Using model Form for user profile we have the problem of limiting the user choicefield for the logget user
+# due to this I'm using a normal manually specified form
+class EditUserProfileForm(forms.Form):
+    joining_date = forms.DateField(label='Joining date: ')
+    role = forms.CharField(label='Role: ', widget=forms.TextInput(attrs={'size': 100}))
+    seniority = forms.ModelChoiceField(queryset=Seniority.objects.all(), label='Seniority: ', required=False)
+    location = forms.CharField(label='Location: ', widget=forms.TextInput(attrs={'size': 30}), required=False)
+    bio = forms.CharField(label='Bio: ', widget=forms.TextInput(attrs={'size': 600}), required=False)
 
     def __init__(self, user=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['user'] = user.username
-
         try:
             user_profile = UserProfile.objects.get(user=user)
-            self.fields['role'] = user_profile.role
-            self.fields['seniority'] = user_profile.seniority
-            self.fields['joining_date'] = user_profile.joining_date
-            self.fields['bio'] = user_profile.bio
-            self.fields['location'] = user_profile.location
+            self.fields['role'].initial = user_profile.role
+            self.fields['seniority'].initial = user_profile.seniority
+            self.fields['joining_date'].initial = user_profile.joining_date
+            self.fields['bio'].initial = user_profile.bio
+            self.fields['location'].initial = user_profile.location
         except Exception as e:
             print(e)
+            self.fields['joining_date'].initial = now().today()
 
 
 

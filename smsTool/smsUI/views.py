@@ -17,7 +17,7 @@ class personalHome_shortcut(ListView):
 	template_name = 'personalHome2.html'
 
 	def get_queryset(self): 
-		return PersonalSkills.objects.filter(user_profile__user=self.request.user)
+		return PersonalSkills.objects.filter(user_profile=UserProfile.objects.get(user=self.request.user))
 
 # Class based detail view for personal hompage based on UserProfile (good way, with slug definition problems)
 class personalHome(DetailView):
@@ -180,6 +180,7 @@ def editUserProfile(request):
 				user_profile.joining_date = form_data.cleaned_data['joining_date']
 				user_profile.bio = form_data.cleaned_data['bio']
 				user_profile.location = form_data.cleaned_data['location']
+				user_profile.save()
 				print("User profile saved")
 				return redirect(reverse('personalHome'))
 
