@@ -41,8 +41,22 @@ def register(request):
 	elif request.method == 'POST':
 		form = smsUIUserCreationForm(request.POST)
 		if form.is_valid():
+			# User creation
 			user = form.save()
+			print('New user created successfully')
 			login(request, user)
+			# User profile creation
+			user_profile = UserProfile()
+			user_profile.user = user
+			user_profile.save()
+			print('New user profile created successfully')
+			# User personal skills creation
+			for skill_element in SkillElement.objects.all():
+				personal_skill =  PersonalSkills()
+				personal_skill.user_profile = user_profile
+				personal_skill.skill_element = skill_element
+				personal_skill.save()
+			print('New user personal skills created successfully')
 			return redirect(reverse('personalHome'))
 
 	return redirect(reverse('home'))
@@ -57,8 +71,9 @@ def editPersonalSkills(request):
 		form_data = EditPersonalSkillsForm(user=request.user, data=request.POST)
 		if form_data.is_valid():   
 			for index, skill in enumerate(SkillElement.objects.all()):
-				personal_skill = PersonalSkills.objects.get(user=request.user, skill_element=skill)
-				personal_skill.familiarity = form_data.cleaned_data[f'skill_{i}']
+				personal_skill = PersonalSkills.objects.get(\
+					user_profile=UserProfile.objects.get(user=request.user), skill_element=skill)
+				personal_skill.familiarity = form_data.cleaned_data[f'skill_{index}']
 				personal_skill.save()
 
 			print("Personal skills editing completed")
@@ -100,8 +115,9 @@ def addSkill(request):
 
 				# Update user personal skills familiarity for the new skill element
 				try:
-					personal_skill = PersonalSkills.objects.get(\
-						user_profile=UserProfile.objects.get(user=request.user), skill_element=new_skill_element)
+					personal_skill = PersonalSkills()
+					personal_skill.user_profile = UserProfile.objects.get(user=request.user)
+					personal_skill.skill_element = new_skill_element
 					personal_skill.familiarity = form_data.cleaned_data['familiarity']
 					personal_skill.save()
 					print("User personal skills updated")
@@ -163,16 +179,20 @@ def editUserProfile(request):
 		form_data = EditUserProfileForm(user=request.user, data=request.POST)
 		if form_data.is_valid():   
 			
-			#Avoid duplicate user profile, and allow insertion new user profile
+			# Avoid duplicate user profile, and allow insertion new user profile.
+			# New user profile require creation of related PersonalSkills object.
+			new_user = False
 			try:
 				# Edit existing user profile
 				user_profile = UserProfile.objects.get(user=request.user)
 				print("Edit user profile")
 			except:
 				# New user profile
+				new_user = True
 				user_profile = UserProfile()
 				user_profile.user = request.user
 				print("New user profile")
+
 			
 			finally:
 				user_profile.role = form_data.cleaned_data['role']
@@ -182,6 +202,15 @@ def editUserProfile(request):
 				user_profile.location = form_data.cleaned_data['location']
 				user_profile.save()
 				print("User profile saved")
+				if new_user:
+					# New user profile require creation of related PersonalSkills objects.
+					for skill_element in SkillElement.objects.all():
+						personal_skill =  PersonalSkills()
+						personal_skill.user_profile = user_profile
+						personal_skill.skill_element = skill_element
+						personal_skill.save()
+					print("Personal skills new user profile saved")
+
 				return redirect(reverse('personalHome'))
 
 		else:

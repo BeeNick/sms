@@ -2,8 +2,14 @@
 ## Skills management system
 
 
-Tool di gestione competenze interno ad un azienda di sviluppo software.
+### !ATTENZIONE! 
+sms è distribuito nella speranza che sia utile ma SENZA ALCUNA GARANZIA.\
+Si precisa inoltre che ad oggi sms risulta ANCORA IN FASE DI REALIZZAZIONE
 
+----------------------------------------------------------------------------
+
+
+Tool di gestione competenze interno ad un azienda di sviluppo software.\
 Potranno essere realizzate versioni più generiche, ma al momento questo è ciò che mi interessa. : )
 
 Il software verrà realizzato principalmente in python, semplicemente perchè è il linguaggio con cui mi trovo più comodo per fare questo genere di cose. ; )
@@ -15,6 +21,7 @@ Il codice sarà in inglese ma probabilmente le parti più descrittive (tipo ques
 
 Di seguito provo a definire le fasi di sviluppo. Non è detto che riuscirò a mantenere esattamente questo flusso. In particolare, cercerò di eseguire gli sviluppi di ogni fase tenendo a mente che l'obiettivo è di arrivare a realizzare anche le fasi successive. Quindi se ad esempio dovesse emergere che nel fare uno sviluppo per la fase 2 viene comodo implementare subito uno sviluppo della fase 3 probabilimente lo farò.
 
+----------------------------------------------------------------------------
 
 ### Fase 1 MVP
 Per ogni account consentire di:
@@ -29,14 +36,9 @@ Per ogni account consentire di:
 - 4 posso lavorarci autonomamente;
 - 5 posso usarlo anche per farti il caffè;
 
+
+
 ### Fase 2
- - Verificare i linguaggi: per ogni linguaggio consentire di aggiungere link a progetti a cui si ha contribuito o pagine di certificazione;
- - All'inserimento di un linguaggio non ancora gestito inviare notifica ad un gruppo di utenti supervisori.
-
-Dashboard con riassunto di percentuali di diffusione delle varie competenze senza differenziazione per livello di conoscenza
-
-
-### Fase 3
 Consentire l'inserimento di altre competenze oltre ai linguaggi di programmazione:
  - Elenco di argomenti definito da un gruppo di utenti;
  - Linguaggi di markup;
@@ -48,6 +50,13 @@ Consentire l'inserimento di altre competenze oltre ai linguaggi di programmazion
  - ? Paradigmi di programmazione;
  - ? Lingua parlata, scritta, compresa?;
  - Altro.
+
+Dashboard con riassunto di percentuali di diffusione delle varie competenze senza differenziazione per livello di conoscenza
+
+
+### Fase 3
+ - Verificare i linguaggi: per ogni linguaggio consentire di aggiungere link a progetti a cui si ha contribuito o pagine di certificazione;
+ - All'inserimento di un linguaggio non ancora gestito inviare notifica ad un gruppo di utenti supervisori.
 
 
 Dashboard con riassunto di percentuali di diffusione delle varie competenze con differenziazione per livello di conoscenza
@@ -87,6 +96,7 @@ Validazione delle conoscenze.
 Esempio sui linguaggi di programmazione:
 
 Per ogni linguaggio conosciuto, ogni 3 mesi si chiede di scrivere un breve pezzo di codice con un output ben definito e questo viene inviato random alle altre persone che dichiarano di conoscere il linguaggio alle quali si richiede di indicare qual'é l'output. Ad ogni persona deve arrivare un massimo di boh, 2 o 3 test per linguaggio e sarebbe bene valutare in modo differente un test non fatto da un test fallito. 
+
 
 
 

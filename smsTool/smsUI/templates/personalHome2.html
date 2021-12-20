@@ -53,9 +53,11 @@ Here your profile info
 		{% for skill in skills_list %}
 		<!-- Display only usefull informations -->
 			{% if skill.familiarity != 0 %}
-				<li>{{ skill.skill_element.skill_set.name }}</li>
-				<li>{{ skill.skill_element.name }}</li>
-				<li>{{ skill.familiarity }}</li>
+				<br>
+				<li><strong> Skills set: </strong> {{ skill.skill_element.skill_set.name }}</li>
+				<li><strong> Skill element: </strong> {{ skill.skill_element.name }}</li>
+				<li><strong> Familiarity: </strong> {{ skill.familiarity }}</li>
+				<br>
 			{% endif %}
 		{% endfor %}
 		</ul>

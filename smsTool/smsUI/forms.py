@@ -16,8 +16,9 @@ class EditPersonalSkillsForm(forms.Form):
     try:
         for index, skill in enumerate(SkillElement.objects.all()):
             # wrong way: only the label has the value of the element, the filed is enumerative
-            exec(f"skill_{index} = forms.PositiveIntegerField(\
-                label='{skill.skill_set.name} - {skill.name} familiarity: ')")
+            exec(f"skill_{index} = \
+             forms.IntegerField( label='{skill.skill_set.name} - {skill.name} familiarity: ', \
+              min_value=0, max_value=5)")
     except Exception as e:
         print('Edit personal skills form error')
         print(e)
@@ -26,11 +27,15 @@ class EditPersonalSkillsForm(forms.Form):
     def __init__(self, user=None, *args, **kwargs):
         super(EditPersonalSkillsForm, self).__init__(*args, **kwargs)
 
-        try:
-            personal_skills = PersonalSkills.objects.filter(user_profile=UserProfile.objects.get(user=user))
-        
+        personal_skills = PersonalSkills.objects.filter(
+                user_profile=UserProfile.objects.get(user=user)
+            )
+
+        try:        
             for index, skill in enumerate(SkillElement.objects.all()):
-                exec(f"self.fields['skill_{index}'].initial = {PersonalSkills.objects.get(user_profile=UserProfile.objects.get(user=user), skill_element=skill).familiarity}")
+                for personal_skill in personal_skills:
+                    if skill.name == personal_skill.skill_element.name:
+                        exec(f"self.fields['skill_{index}'].initial = {personal_skill.familiarity}")
 
         except Exception as e:
             print('Edit personal skills form initialization error')

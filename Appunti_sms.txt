@@ -41,3 +41,8 @@ Per non dimenticarmene ho tenuto anche la versione non funzionante
 verificare come mai nel portale di amministrazione non sono visibili i modelli dell'app smsUI
 verificare che tutti form realizzati salvino correttamente i dati
 
+Migliorare esposizione dati
+
+Salvo problemi, la "fase 1" dovrebbe essere completa.
+Predisporre appositi test
+
