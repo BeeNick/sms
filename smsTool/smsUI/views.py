@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
+from django.http import HttpResponseForbidden
 from django.views.generic import DetailView, ListView
-from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm, EditUserProfileForm
-from smsUI.models import PersonalSkills, UserProfile, SkillElement, SkillsSet
+from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm, EditUserProfileForm, NewSeniorityForm
+from smsUI.models import PersonalSkills, UserProfile, SkillElement, SkillsSet, Seniority
 
 
 # Main hompage
@@ -220,3 +221,96 @@ def editUserProfile(request):
 	else:
 		print("GET")
 		return render(request, 'editUserProfile.html', {"form": form})
+
+
+# settings - superuser only 
+def settings(request):
+	if request.user.is_superuser:
+		return render(request, 'settings.html')
+	else:
+		return HttpResponseForbidden()
+
+
+# Class based list view for seniority - superuser only
+class editSeniority(ListView):
+	model = Seniority
+	context_object_name = 'seniority_list'
+	template_name = 'editSeniority.html'
+
+
+# Edit seniority rank - superuser only 
+def editSeniorityRank(request, seniority_id, operation):
+	if request.user.is_superuser and request.method == 'POST':
+		try:
+			seniority = Seniority.objects.get(id=seniority_id)
+			#TODO : increase or decrease seniority rank based on operation value, remember to update also the others
+			#       seniority objects (filter by rank > or < and cicle)
+			print(f'{seniority.name}')
+			print(f'{seniority.rank}')
+			print(f'{operation}')
+			print('Seniority updated')
+		except:
+			print('Error editing seniority')
+		finally:
+			return redirect(reverse('editSeniority'))
+	else:
+		return HttpResponseForbidden()
+
+
+# Delete seniority - superuser only 
+def deleteSeniority(request, seniority_id):
+	if request.user.is_superuser and request.method == 'POST':
+		try:
+			seniority = Seniority.objects.get(id=seniority_id)
+			seniority.delete()
+			print('Seniority deleted')
+		except:
+			print('Error deleting seniority')
+		finally:
+			return redirect(reverse('editSeniority'))
+	else:
+		return HttpResponseForbidden()
+
+
+# Add new seniority value - superuser only 
+def addSeniority(request):
+	if request.user.is_superuser:
+		form = NewSeniorityForm()  
+		if request.method == 'POST':
+			# Parse data from the POST in form_data
+			form_data = NewSeniorityForm(data=request.POST)
+			if form_data.is_valid():   
+				new_seniority_name = form_data.cleaned_data['name']
+				new_seniority_rank = form_data.cleaned_data['rank']
+
+				#Avoid duplicate seniority
+				try:
+					seniority.objects.get(name=new_seniority_name)
+					print("Seniority name already exist!")
+					return render(request, "seniority.html", {"form": form}, \
+					{"error_message": "Seniority name already exist! Please insert a different name"})
+				except:
+					# Avoid duplicate rank values
+					try:
+						seniority.objects.get(rank=new_seniority_rank)
+						print("Seniority rank already exist!")
+						return render(request, "seniority.html", {"form": form}, \
+						{"error_message": "Seniority rank value already used! Please insert a different value"})
+					except:
+						# Save new seniority
+						new_seniority = Seniority()
+						new_seniority.name = new_seniority_name
+						new_seniority.rank = new_seniority_rank
+						new_seniority.save()
+						print("Seniority saved")
+						return redirect(reverse('editSeniority'))
+			else:
+				return render(request, "editSeniority.html", {"form": form}, \
+					{"error_message": "Something wrong in adding new seniority"})
+
+		else:
+			print("GET")
+			return render(request, 'seniority.html', {"form": form})
+	else:
+		return HttpResponseForbidden()
+

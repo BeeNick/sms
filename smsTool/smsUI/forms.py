@@ -90,6 +90,8 @@ class EditUserProfileForm(forms.Form):
             self.fields['joining_date'].initial = now().today()
 
 
-
+class NewSeniorityForm(forms.Form):
+    name = forms.CharField(label='Seniority: ', widget=forms.TextInput(attrs={'size': 50}))
+    rank = forms.IntegerField(label='Rank: ', min_value=0)
 
 

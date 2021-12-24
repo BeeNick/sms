@@ -1,0 +1,32 @@
+<!--smsUI/templates/settings.html-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Settings</h2>
+
+<div>
+	<br>
+	{% if user.is_authenticated %}
+		<a href="{% url 'logout' %}">Logout</a>
+		<br>
+		<a href="{% url 'password_change' %}">Change password</a>
+		<br>
+		{% if user.is_superuser %}
+			<a href="{% url 'editSeniority' %}">Seniority</a>
+			<br>
+			<a href="{% url 'home' %}">Delete Skill</a>
+			<br>
+			<a href="{% url 'home' %}">Delete Skill Set</a>
+			<br>
+			<a href="{% url 'home' %}">New Admin</a>
+			<br>
+			<a href="{% url 'home' %}">Remove User</a>
+		{% endif %}
+	{% else %}
+		<a href="{% url 'login' %}">Login</a>
+	{% endif %}
+</div>
+
+{% endblock %}

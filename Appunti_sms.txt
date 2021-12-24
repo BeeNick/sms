@@ -46,3 +46,7 @@ Migliorare esposizione dati
 Salvo problemi, la "fase 1" dovrebbe essere completa.
 Predisporre appositi test
 
+---
+Predisposta pagina Settings, devono ancora essere integrate le varie funzionalità.
+Preparata gestione seniority, deve ancora essere integrata la possibilità di cambiare il rank tramite bottoni UP e Down
+

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from smsUI.views import home, personalHome, register, personalHome_shortcut, editPersonalSkills, addSkill, addSkillsSet, editUserProfile
+from smsUI.views import *
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
@@ -10,5 +10,10 @@ urlpatterns = [
     path('editPersonalSkills/', editPersonalSkills, name='editPersonalSkills'),
     path('newSkillElement/', addSkill, name='newSkillElement'),
     path('newSkillsSet/', addSkillsSet, name='newSkillsSet'),
-    path('editUserProfile/', editUserProfile, name='editUserProfile')
+    path('editUserProfile/', editUserProfile, name='editUserProfile'),
+    path('settings/', settings, name='settings'),
+    path('editSeniority/', editSeniority.as_view(), name='editSeniority'),
+    path('editSeniority/editSeniorityRank/<int:seniority_id><str:operation>', editSeniorityRank, name='editSeniorityRank'),
+    path('editSeniority/deleteSeniority/<int:seniority_id>', deleteSeniority, name='deleteSeniority'),
+    path('newSeniority/', addSeniority, name='newSeniority')
 ]

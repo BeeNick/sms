@@ -1,0 +1,32 @@
+<!--smsUI/templates/newSeniority.html-->
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>New seniority</h2>
+
+{% if user.is_authenticated %}
+    {% if user.is_superuser %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Ok" />
+        </form>
+        <br>
+        <a href="{% url 'home' %}">Add new skills set</a>
+        <br>
+        <a href="{% url 'editPersonalSkills' %}">Back</a>
+        <br>
+        <a href="{% url 'personalHome' %}">Home</a>
+        <br>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+<p style="color:red"><strong> {{error_message}} </strong></p>
+
+
+{% endblock %}
