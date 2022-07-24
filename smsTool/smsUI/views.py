@@ -243,11 +243,17 @@ def editSeniorityRank(request, seniority_id, operation):
 	if request.user.is_superuser and request.method == 'POST':
 		try:
 			seniority = Seniority.objects.get(id=seniority_id)
-			#TODO : increase or decrease seniority rank based on operation value, remember to update also the others
-			#       seniority objects (filter by rank > or < and cicle)
-			print(f'{seniority.name}')
-			print(f'{seniority.rank}')
-			print(f'{operation}')
+			#TODO : increase or decrease seniority rank based on operation value -> DONE
+			#TODO : remember to update also the others seniority objects (filter by rank > or < and cicle
+			if operation == '+':
+				# Increase the selected seniority
+				seniority.rank = seniority.rank + 1
+				#TODO Create a function that check if exist another seniority with the same new rank and update it
+
+			elif operation == '-':
+				seniority.rank = seniority.rank - 1
+				#TODO Create a function that check if exist another seniority with the same new rank and update it
+			seniority.save()
 			print('Seniority updated')
 		except:
 			print('Error editing seniority')
