@@ -9,7 +9,7 @@ class Seniority(models.Model):
 	rank = models.PositiveIntegerField(null=True)
 
 	class Meta:
-		ordering = ['rank','name']
+		ordering = ['-rank','name']
 		constraints = [models.UniqueConstraint(fields=['name'], name='unique_seniority_name'), \
 		models.UniqueConstraint(fields=['rank'], name='unique_seniority_rank')]
 
