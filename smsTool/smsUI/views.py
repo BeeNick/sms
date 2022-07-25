@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.urls import reverse
 from django.http import HttpResponseForbidden
 from django.views.generic import DetailView, ListView
+from django.db.models import Max
 from smsUI.forms import smsUIUserCreationForm, EditPersonalSkillsForm, NewSkillElementForm, NewSkillsSetForm, EditUserProfileForm, NewSeniorityForm
 from smsUI.models import PersonalSkills, UserProfile, SkillElement, SkillsSet, Seniority
 
@@ -243,16 +244,39 @@ def editSeniorityRank(request, seniority_id, operation):
 	if request.user.is_superuser and request.method == 'POST':
 		try:
 			seniority = Seniority.objects.get(id=seniority_id)
-			#TODO : increase or decrease seniority rank based on operation value -> DONE
-			#TODO : remember to update also the others seniority objects (filter by rank > or < and cicle
-			if operation == '+':
-				# Increase the selected seniority
-				seniority.rank = seniority.rank + 1
-				#TODO Create a function that check if exist another seniority with the same new rank and update it
+
+			# Search for a value that actually is not in use
+			#TODO: correct next sentence
+			#available_seniority_rank = Seniority.objects.aggregate(Max('rank')).rank + 2
+			available_seniority_rank = 10000
+
+			# Increase/Decrease the selected seniority
+			if operation == '+':	
+				desired_seniority_rank = seniority.rank + 1
+
+				# Update eventual others seniority objects to avoide duplicate rank
+				seniorities_same_rank = Seniority.objects.filter(rank=desired_seniority_rank)
+				for seniority_item in seniorities_same_rank:
+					seniority_item.rank = seniority_item.rank -1
 
 			elif operation == '-':
-				seniority.rank = seniority.rank - 1
-				#TODO Create a function that check if exist another seniority with the same new rank and update it
+				desired_seniority_rank = seniority.rank - 1
+
+				# Update eventual others seniority objects to avoide duplicate rank
+				seniorities_same_rank = Seniority.objects.filter(rank=desired_seniority_rank)
+				for seniority_item in seniorities_same_rank:
+					seniority_item.rank = seniority_item.rank +1
+
+			# Momentarily update with available rank value
+			seniority.rank = available_seniority_rank
+			seniority.save()
+
+			# Save eventual others seniority objects to avoide duplicate rank
+			for seniority_item in seniorities_same_rank:
+				seniority_item.save()
+
+			# Set definitive rank value
+			seniority.rank = desired_seniority_rank
 			seniority.save()
 			print('Seniority updated')
 		except:
